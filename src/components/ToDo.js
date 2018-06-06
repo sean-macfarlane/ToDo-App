@@ -4,7 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import Swipeout from 'react-native-swipeout';
 
 import { connect } from 'react-redux';
-import { deleteTodo, deleteCompleted } from '../actions/todo';
+import { deleteTodo } from '../actions/todo';
+import { deleteCompleted } from '../actions/completed';
 import { setModalTodo } from '../actions/modal';
 import Colors from '../constants/Colors';
 
@@ -12,16 +13,17 @@ class ToDo extends React.Component {
     swipeoutBtns = [
         {
             text: 'Edit',
-            onPress: this.onEdit
+            onPress: () => { this.onEdit() }
         },
         {
             type: 'delete',
             text: 'Delete',
-            onPress: this.onDelete
+            onPress: () => { this.onDelete() }
         }
     ];
 
     onEdit = () => {
+        console.log("test")
         this.props.setModalTodo({ id: this.props.id, body: this.props.body, complete: this.props.complete });
         this.props.navigation.navigate('CreateModal', { isEdit: true });
     }
@@ -56,7 +58,7 @@ class ToDo extends React.Component {
 
     render() {
         return (
-            <Swipeout right={swipeoutBtns} style={{ flex: 1 }}>
+            <Swipeout right={this.swipeoutBtns} style={{ flex: 1 }}>
                 <TouchableOpacity style={styles.container}>
                     {this.renderIcon()}
                     <Text style={styles.body}>{this.props.body}</Text>
@@ -81,4 +83,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(null, { deleteTodo, deleteCompleted })(ToDo);
+export default connect(null, { deleteTodo, deleteCompleted, setModalTodo })(ToDo);

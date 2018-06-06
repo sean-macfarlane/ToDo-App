@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import { fetchCompleted } from '../actions/todo';
+import { fetchCompleted } from '../actions/completed';
 import ToDo from '../components/ToDo';
 
 class CompletedScreen extends React.Component {

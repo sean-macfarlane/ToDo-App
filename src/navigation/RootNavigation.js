@@ -4,21 +4,15 @@ import { createStackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import CreateScreen from '../screens/CreateScreen';
-import EditScreen from '../screens/EditScreen';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
 const CreateStack = createStackNavigator({
   Create: CreateScreen,
 });
 
-const EditStack = createStackNavigator({
-  Edit: EditScreen,
-});
-
 const AppNavigator = createStackNavigator({
   Main: MainTabNavigator,
-  CreateModal: CreateStack,
-  EditModal: EditStack
+  CreateModal: CreateStack
 }, {
     headerMode: 'none',
     mode: 'modal',

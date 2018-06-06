@@ -15,12 +15,24 @@ import { fetchTodo } from '../actions/todo';
 import ToDo from '../components/ToDo';
 
 class HomeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'ToDo',
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+
+    return {
+      title: 'ToDo' + (params.total ? ' (' + params.total + ')' : '')
+    }
   };
 
   componentDidMount() {
     this.props.fetchTodo();
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.todos.length != this.props.todos.length) {
+      this.props.navigation.setParams({
+        total: newProps.todos.length
+      })
+    }
   }
 
   _keyExtractor = (item, index) => item.id;

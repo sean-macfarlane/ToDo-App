@@ -2,7 +2,9 @@ import React from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
 
 import { connect } from 'react-redux';
-import { createTodo, updateTodo, updateCompleted } from '../actions/todo';
+import { createTodo, updateTodo  } from '../actions/todo';
+import { updateCompleted } from '../actions/completed';
+import { setModalTodo } from '../actions/modal';
 import Colors from '../constants/Colors';
 
 class CreateScreen extends React.Component {
@@ -12,7 +14,7 @@ class CreateScreen extends React.Component {
     return {
       title: (params.isEdit ? 'Edit' : 'Add'),
       headerLeft: (
-        <TouchableOpacity onPress={() => { navigation.goBack(null); }}>
+        <TouchableOpacity onPress={params.onCancel}>
           <Text style={styles.headerButton}>Cancel</Text>
         </TouchableOpacity>
       ),
@@ -35,7 +37,8 @@ class CreateScreen extends React.Component {
   componentDidMount() {
     this.props.navigation.setParams({
       isValid: false,
-      onSave: this.onSave
+      onSave: this.onSave,
+      onCancel: this.onCancel
     })
   }
 
@@ -57,6 +60,12 @@ class CreateScreen extends React.Component {
 
   onChangeText = (text) => {
     this.setState({ text });
+  }
+
+  onCancel = () => {
+    this.setState({ text: null });
+    this.props.setModalTodo({});
+    this.props.navigation.goBack(null);
   }
 
   onSave = () => {
@@ -124,4 +133,4 @@ const mapStateToProps = state => ({
   todo: state.modal.todo
 })
 
-export default connect(mapStateToProps, { createTodo })(CreateScreen);
+export default connect(mapStateToProps, { createTodo, setModalTodo, updateTodo, updateCompleted })(CreateScreen);
