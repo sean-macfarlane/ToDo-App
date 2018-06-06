@@ -35,7 +35,7 @@ CreateStack.navigationOptions = ({ navigation }) => ({
     />
   ),
   tabBarOnPress: ({ navigation }) => {
-    navigation.navigate("CreateModal");
+    navigation.navigate("CreateModal", {});
   }
 });
 

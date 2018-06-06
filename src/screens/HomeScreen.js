@@ -12,6 +12,7 @@ import {
 
 import { connect } from 'react-redux';
 import { fetchTodo } from '../actions/todo';
+import ToDo from '../components/ToDo';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -22,15 +23,18 @@ class HomeScreen extends React.Component {
     this.props.fetchTodo();
   }
 
-  renderItem = ({item}) => (
-    <ToDo id={item.id} body={item.body} complete={item.complete} created={item.created} />
+  _keyExtractor = (item, index) => item.id;
+
+  renderItem = ({ item }) => (
+    <ToDo id={item.id} body={item.body} complete={item.complete} created={item.created} navigation={this.props.navigation} />
   )
- 
+
   render() {
     return (
       <View style={styles.container}>
-        <FlatList 
-          data={this.props.todos}         
+        <FlatList
+          data={this.props.todos}
+          keyExtractor={this._keyExtractor}
           renderItem={this.renderItem}
         />
       </View>
@@ -40,13 +44,12 @@ class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 15
+    flex: 1
   },
 });
 
 const mapStateToProps = state => ({
-  todos: state.todo.items
+  todos: state.todo.todos
 })
 
 export default connect(mapStateToProps, { fetchTodo })(HomeScreen);

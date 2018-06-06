@@ -1,20 +1,20 @@
 import _ from 'lodash';
-import { FETCH_TODO, FETCH_COMPLETED, NEW_TODO, UPDATE_TODO, UPDATE_COMPLETED, DELETE_TODO, DELETE_COMPLETED } from '../actions/types';
+import { FETCH_COMPLETED, UPDATE_COMPLETED, DELETE_COMPLETED } from '../actions/types';
 
 const initialState = {
-    todos: []
+    completed: []
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case FETCH_TODO:
+        case FETCH_COMPLETED:
             return {
                 ...state,
-                todos: action.data
+                completed: action.data
             }
             break;
-        case DELETE_TODO:
-            var index = _.findIndex(state.todos, (todo) => todo.id === action.id);
+        case DELETE_COMPLETED:
+            var index = _.findIndex(state.completed, (todo) => todo.id === action.id);
             if (index === -1) {
                 return {
                     ...state
@@ -23,7 +23,7 @@ export default function (state = initialState, action) {
 
             return {
                 ...state,
-                todos: { ...state.todos.slice(0, index) }
+                completed: { ...state.completed.slice(0, index) }
             };
         default:
             return state;
