@@ -1,2 +1,5 @@
 node_modules/**/*
 .expo/**/*
+/ToDoServer/target/
+/server/target/
+/server/src/main/resources/application.properties
