@@ -20,3 +20,5 @@ React Native App, with Java and Spring Boot Server
         `exp start`
 
     Run server with IDE or manually
+    
+![alt text](https://raw.githubusercontent.com/sean-macfarlane/ToDo-App/master/sample/add.jpg
