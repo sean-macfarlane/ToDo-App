@@ -35,7 +35,7 @@ class HomeScreen extends React.Component {
     }
   }
 
-  _keyExtractor = (item, index) => item.id;
+  _keyExtractor = (item, index) => item.id.toString();
 
   renderItem = ({ item }) => (
     <ToDo id={item.id} body={item.body} complete={item.complete} created={item.created} navigation={this.props.navigation} />

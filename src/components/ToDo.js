@@ -4,8 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Swipeout from 'react-native-swipeout';
 
 import { connect } from 'react-redux';
-import { deleteTodo } from '../actions/todo';
-import { deleteCompleted } from '../actions/completed';
+import { updateTodo, deleteTodo, deleteCompleted } from '../actions/todo';
 import { setModalTodo } from '../actions/modal';
 import Colors from '../constants/Colors';
 
@@ -23,7 +22,6 @@ class ToDo extends React.Component {
     ];
 
     onEdit = () => {
-        console.log("test")
         this.props.setModalTodo({ id: this.props.id, body: this.props.body, complete: this.props.complete });
         this.props.navigation.navigate('CreateModal', { isEdit: true });
     }
@@ -34,6 +32,16 @@ class ToDo extends React.Component {
         } else {
             this.props.deleteTodo(this.props.id);
         }
+    }
+
+    updateComplete = () => {
+        let data = {
+            id: this.props.id,
+            body: this.props.body,
+            complete: !this.props.complete
+        };
+
+        this.props.updateTodo(data);
     }
 
     renderIcon = () => {
@@ -59,7 +67,7 @@ class ToDo extends React.Component {
     render() {
         return (
             <Swipeout right={this.swipeoutBtns} style={{ flex: 1 }}>
-                <TouchableOpacity style={styles.container}>
+                <TouchableOpacity style={styles.container} onPress={this.updateComplete}>
                     {this.renderIcon()}
                     <Text style={styles.body}>{this.props.body}</Text>
                 </TouchableOpacity>
@@ -76,11 +84,14 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         backgroundColor: '#fff',
         borderBottomWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(1),
-        borderColor: '#c9c9c9'
+        borderColor: '#c9c9c9',
+        alignItems: 'center'
     },
     body: {
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        paddingVertical: 10,
+        justifyContent: 'center'
     }
 });
 
-export default connect(null, { deleteTodo, deleteCompleted, setModalTodo })(ToDo);
+export default connect(null, { updateTodo, deleteTodo, deleteCompleted, setModalTodo })(ToDo);

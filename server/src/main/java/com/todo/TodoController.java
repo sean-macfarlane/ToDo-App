@@ -24,16 +24,22 @@ public class TodoController {
 
     @CrossOrigin
     @GetMapping("/todo")
-    public List<Todo> index() {
-        return todoRepository.findAll();
+    public List<Todo> index(@RequestParam(required = false) String complete) {
+        if (complete == null) {
+            return todoRepository.findAll();
+        } else {
+            boolean completeValue = Boolean.parseBoolean(complete);
+
+            return todoRepository.findAllByComplete(completeValue);
+       }
     }
 
     @CrossOrigin
     @PostMapping("/todo")
     public Todo create(@RequestBody Map<String, String> requestBody) {
         String body = requestBody.get("body");
-
-        return todoRepository.save(new Todo(body));
+        
+        return todoRepository.saveAndFlush(new Todo(body));
     }
 
     @CrossOrigin
@@ -41,22 +47,25 @@ public class TodoController {
     public Todo update(@PathVariable String id, @RequestBody Map<String, String> requestBody) {
         int todoId = Integer.parseInt(id);
         String body = requestBody.get("body");
+        boolean complete = Boolean.parseBoolean(requestBody.get("complete"));
 
         Todo todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Todo", "id", todoId));
 
         todo.setBody(body);
+        todo.setComplete(complete);
+
         return todoRepository.save(todo);
 
     }
 
     @CrossOrigin
     @DeleteMapping("/todo/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        int todoId = Integer.parseInt(id);
+    public boolean delete(@PathVariable String id) {
+        int todoId = Integer.parseInt(id);       
         todoRepository.deleteById(todoId);
 
-        return ResponseEntity.ok().build();
+        return true;
     }
 
 }

@@ -1,7 +1,8 @@
-import { FETCH_TODO, NEW_TODO, UPDATE_TODO, DELETE_TODO } from '../actions/types';
+import { FETCH_TODO, FETCH_COMPLETED, NEW_TODO, UPDATE_TODO, DELETE_TODO, DELETE_COMPLETED } from '../actions/types';
+import Config from '../constants/Config';
 
 export const fetchTodo = () => dispatch => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
+    fetch(Config.server + '/todo?complete=false')
         .then(res => res.json())
         .then(data =>
             dispatch({
@@ -9,8 +10,20 @@ export const fetchTodo = () => dispatch => {
                 data: data
             }));
 }
+
+export const fetchCompleted = () => dispatch => {
+    fetch(Config.server + '/todo?complete=true')
+        .then(res => res.json())
+        .then(data =>
+            dispatch({
+                type: FETCH_COMPLETED,
+                data: data
+            }));
+}
+
 export const createTodo = (todoData) => dispatch => {
-    fetch('https://jsonplaceholder.typicode.com/posts', {
+    console.log(todoData)
+    fetch(Config.server + '/todo', {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -25,8 +38,8 @@ export const createTodo = (todoData) => dispatch => {
 }
 
 export const updateTodo = (todoData) => dispatch => {
-    fetch('https://jsonplaceholder.typicode.com/posts', {
-        method: 'UPDATE',
+    fetch(Config.server + '/todo/' + todoData.id, {
+        method: 'PUT',
         headers: {
             'content-type': 'application/json'
         },
@@ -39,8 +52,23 @@ export const updateTodo = (todoData) => dispatch => {
         }));
 }
 
-export const deleteTodo = (todoData) => dispatch => {
-    fetch('https://jsonplaceholder.typicode.com/posts', {
+export const setCompleted = (todoData) => dispatch => {
+    fetch(Config.server + '/todo/' + todoData.id, {
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(todoData)
+    })
+        .then(res => res.json())
+        .then(data => dispatch({
+            type: SET_COMPLETED_TRUE,
+            data: data
+        }));
+}
+
+export const deleteTodo = (id) => dispatch => {
+    fetch(Config.server + '/todo/' + id, {
         method: 'DELETE',
         headers: {
             'content-type': 'application/json'
@@ -49,6 +77,20 @@ export const deleteTodo = (todoData) => dispatch => {
         .then(res => res.json())
         .then(data => dispatch({
             type: DELETE_TODO,
-            data: data
+            data: id
+        }));
+}
+
+export const deleteCompleted = (id) => dispatch => {
+    fetch(Config.server + '/todo/' + id, {
+        method: 'DELETE',
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then(data => dispatch({
+            type: DELETE_COMPLETED,
+            data: id
         }));
 }

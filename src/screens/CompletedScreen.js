@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import { fetchCompleted } from '../actions/completed';
+import { fetchCompleted } from '../actions/todo';
 import ToDo from '../components/ToDo';
 
 class CompletedScreen extends React.Component {
@@ -23,7 +23,7 @@ class CompletedScreen extends React.Component {
     this.props.fetchCompleted();
   }
 
-  _keyExtractor = (item, index) => item.id;
+  _keyExtractor = (item, index) => item.id.toString();
 
   renderItem = ({ item }) => (
     <ToDo id={item.id} body={item.body} complete={item.complete} created={item.created} navigation={this.props.navigation}  />

@@ -3,3 +3,4 @@ node_modules/**/*
 /ToDoServer/target/
 /server/target/
 /server/src/main/resources/application.properties
+/server/nbproject/

@@ -2,14 +2,13 @@ import React from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
 
 import { connect } from 'react-redux';
-import { createTodo, updateTodo  } from '../actions/todo';
-import { updateCompleted } from '../actions/completed';
+import { createTodo, updateTodo } from '../actions/todo';
 import { setModalTodo } from '../actions/modal';
 import Colors from '../constants/Colors';
 
 class CreateScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
+    let { params = {} } = navigation.state;
 
     return {
       title: (params.isEdit ? 'Edit' : 'Add'),
@@ -45,15 +44,7 @@ class CreateScreen extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.text !== prevState.text) {
       this.props.navigation.setParams({
-        isValid: (this.state.text !== '')
-      })
-    }
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.todo.body != this.state.text) {
-      this.setState({
-        text: newProps.todo.body
+        isValid: (this.state.text && this.state.text !== '')
       })
     }
   }
@@ -75,11 +66,7 @@ class CreateScreen extends React.Component {
         body: this.state.text
       };
 
-      if (this.props.todo.complete === true) {
-        this.props.updateCompleted(data);
-      } else {
-        this.props.updateTodo(data);
-      }
+      this.props.updateTodo(data);
     } else {
       let data = {
         body: this.state.text
@@ -87,6 +74,7 @@ class CreateScreen extends React.Component {
 
       this.props.createTodo(data);
     }
+    this.props.navigation.goBack(null);
   }
 
   render() {
@@ -133,4 +121,4 @@ const mapStateToProps = state => ({
   todo: state.modal.todo
 })
 
-export default connect(mapStateToProps, { createTodo, setModalTodo, updateTodo, updateCompleted })(CreateScreen);
+export default connect(mapStateToProps, { createTodo, setModalTodo, updateTodo })(CreateScreen);

@@ -2,21 +2,15 @@ package com.todo;
 
 import java.sql.Timestamp;
 import javax.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 public class Todo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(nullable = false)
     private String body;
-
     private boolean complete;
-    
-    @CreatedDate
     private Timestamp created;
 
     public Todo() {
